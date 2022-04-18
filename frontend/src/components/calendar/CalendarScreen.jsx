@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { CalendarModal } from "./CalendarModal";
 import { useDispatch, useSelector } from "react-redux";
 import { uiOpenModal } from "../../actions/ui";
-import { calendarClearActiveEvent, calendarSetActiveEvent } from "../../actions/calendar-events";
+import { calendarClearActiveEvent, calendarEventStartLoading, calendarSetActiveEvent } from "../../actions/calendar-events";
 import { AddNewFab } from "../ui/AddNewFab";
 import { RemoveFab } from "../ui/RemoveFab";
 
@@ -20,10 +20,14 @@ const localizer = momentLocalizer(moment);
 export const CalendarScreen = () => {
 	const dispatch = useDispatch();
   const { events, activeEvent } = useSelector(state => state.calendar);
+  const { uid } = useSelector(state => state.auth);
 
   useEffect(() => {
-    
-  }, [events])
+  }, [events]);
+  
+  useEffect(() => {
+    dispatch(calendarEventStartLoading());
+  }, [dispatch]);
   
 
   const [lastView, setLastView] = useState(localStorage.getItem('lastView') || 'month');
@@ -47,7 +51,7 @@ export const CalendarScreen = () => {
 
   const eventsStyleGetter = (e, start, end, isSelected) => {
     const style = {
-      backgroundColor: '#367cf7',
+      backgroundColor: uid === e.user ? '#367cf7' : '#465660',
       borderRadius: '0ox',
       opacity: 0.8,
       display: 'block',

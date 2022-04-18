@@ -1,11 +1,11 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import { calendarRemoveEvent } from '../../actions/calendar-events';
+import { calendarEventStartDeleting } from '../../actions/calendar-events';
 
 export const RemoveFab = () => {
 	const dispatch = useDispatch();
 	const handleRemoveEvent = () => {
-		dispatch(calendarRemoveEvent());
+		dispatch(calendarEventStartDeleting());
 	};
 
 	return (

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import DateTimePicker from 'react-datetime-picker';
 
@@ -9,7 +8,11 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiCloseModal } from '../../actions/ui';
-import { calendarAddNewEvent, calendarClearActiveEvent, calendarSetActiveEvent, calendarUpdateEvent } from '../../actions/calendar-events';
+import {
+	calendarClearActiveEvent,
+	calendarEventStartUpdating,
+	calendarStartAddNewEvent
+} from '../../actions/calendar-events';
 
 
 const customStyles = {
@@ -80,18 +83,11 @@ export const CalendarModal = () => {
 
 		// TODO: Save in DB
 		if(activeEvent) {
-			dispatch(calendarUpdateEvent({
+			dispatch(calendarEventStartUpdating({
 				...formValues,
 			}));
 		} else {
-			dispatch(calendarAddNewEvent({
-				...formValues,
-				id: new Date().getTime(),
-				user: {
-					_id: '123',
-					name: 'Brian' 
-				}
-			}));
+			dispatch(calendarStartAddNewEvent(formValues));
 		}
 		setTitleValid(true);
 		closeModal();
